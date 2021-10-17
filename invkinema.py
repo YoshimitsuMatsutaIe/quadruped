@@ -13,36 +13,31 @@ l4 = 1
 
 
 def J(q):
-    q1 = q[0, 0]
-    q2 = q[1, 0]
-    q3 = q[2, 0]
+    """エンドエフェクター状態変数のヤコビ行列"""
     z = np.array([
         [
-            -1.0*l1*sin(q1) + 1.0*sqrt(2)*l2*cos(q1 + q2 + pi/4) + 1.0*l2*cos(q1 + q2 + q3),
-            1.0*l2*(sqrt(2)*cos(q1 + q2 + pi/4) + cos(q1 + q2 + q3)),
-            1.0*l2*cos(q1 + q2 + q3)
+            -l1*sin(q[0,0]) + sqrt(2)*l2*cos(q[0,0] + q[1,0] + pi/4) + l2*cos(q[0,0] + q[0,0] + q[2,0]),
+            l2*(sqrt(2)*cos(q[0,0] + q[2,0] + pi/4) + cos(q[0,0] + q[1,0] + q[2,0])),
+            l2*cos(q[0,0] + q[1,0] + q[2,0])
         ],
         [
-            1.0*l1*cos(q1) + 1.0*sqrt(2)*l2*sin(q1 + q2 + pi/4) + 1.0*l2*sin(q1 + q2 + q3),
-            1.0*l2*(sqrt(2)*sin(q1 + q2 + pi/4) + sin(q1 + q2 + q3)),
-            1.0*l2*sin(q1 + q2 + q3)
+            l1*cos(q[0,0]) + sqrt(2)*l2*sin(q[0,0] + q[1,0] + pi/4) + l2*sin(q[0,0] + q[1,0] + q[2,0]),
+            l2*(sqrt(2)*sin(q[0,0] + q[1,0] + pi/4) + sin(q[0,0] + q[1,0] + q[2,0])),
+            l2*sin(q[0,0] + q[1,0] + q[2,0])
         ],
         [
             1,
             1,
-            1
-        ]
+            1,
+        ],
     ])
     return z
 
 
 def ee(q):
-    q1 = q[0, 0]
-    q2 = q[1, 0]
-    q3 = q[2, 0]
-    x = 1.0*l1*cos(q1) + 1.0*sqrt(2)*l2*sin(q1 + q2 + pi/4) + 1.0*l2*sin(q1 + q2 + q3)
-    y = 1.0*l1*sin(q1) - 1.0*sqrt(2)*l2*cos(q1 + q2 + pi/4) - 1.0*l2*cos(q1 + q2 + q3)
-    phi = q1 + q2 + q3 - 2*pi
+    x = l1*cos(q[0,0] + sqrt(2)*l2*sin(q[0,0] + q[1,0] + pi/4) + l2*sin(q[0,0] + q[1,0] + q[2,0]))
+    y = l1*sin(q[0,0] - sqrt(2)*l2*cos(q[0,0] + q[1,0] + pi/4) - l2*cos(q[0,0] + q[1,0] + q[2,0]))
+    phi = q[0,0] + q[1,0] + q[2,0] - 2*pi
     return np.array([[x, y, phi]]).T
 
 
@@ -145,7 +140,8 @@ if __name__ == '__main__':
 
 
 
-
+if __name__ == "__main__":
+    q = np.zeros(7,1)
     temp_ee = ee(q)
 
     print(q)
