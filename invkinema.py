@@ -51,7 +51,7 @@ xd = np.array([[
 
 
 def inv_kinema(xd, q_before=None):
-    for j in tqdm.tqdm(range(1000)):
+    for j in tqdm.tqdm(range(10)):
         #print(j)
         if q_before is None:
             q =  [np.random.rand()*2*pi for k in range(3)]
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
 
 if __name__ == "__main__":
-    q = np.zeros(7,1)
+    q = np.zeros((7,1))
     temp_ee = ee(q)
 
     print(q)
